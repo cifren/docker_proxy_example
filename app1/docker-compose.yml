@@ -1,0 +1,13 @@
+version: '3.0'
+services:
+  web:
+    image: php:apache
+    volumes:
+      - ./:/var/www/html
+    environment:
+      VIRTUAL_HOST: app1.local
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
