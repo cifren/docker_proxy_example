@@ -58,3 +58,41 @@ In case you have more than one port declared on your docker service, you might n
 which represents the port on the docker service (not the port on your host)
 
 As well, we don't have to `expose` port. 
+
+## Tips
+
+If you want to add this proxy organization on your computer but you already have some projects on your localhost, 
+you have some difficulties to merge proxy on port `80` and your projects on `80` port too.
+
+So on nginx (apache will be pretty much the same), you can use proxy_pass to forward to your **proxy docker server**
+
+First change your **proxy docker server**, on `proxy/docker-compose.yml`
+
+```yaml
+    ports:
+      # - "80:80" before 
+      - "81:80"
+```
+
+In your nginx configuration, create a new file in `/etc/nginx/site-available` within add the configuration 
+
+```nginxconf
+    server {
+        server_name app1.local;
+        location / {
+            proxy_pass http://app1.local:81;
+        }
+    }
+    server {
+        server_name app2.local;
+        location / {
+            proxy_pass http://app2.local:81;
+        }
+    }
+    server {
+        server_name app3.local;
+        location / {
+            proxy_pass http://app3.local:81;
+        }
+    }
+```
