@@ -8,8 +8,9 @@ services:
     environment:
       NODE_ENV: development
       VIRTUAL_HOST: app3.local
-    ports:
-      - 3000:3000
+      VIRTUAL_PORT: 3000
+    expose:
+      - 3000
     command: node index.js
 
 networks:
